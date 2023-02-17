@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { WeatherData } from 'src/app/models/weather-response';
+import { WeatherData, WeatherItem } from 'src/app/models/weather-response';
+import { IconRegistryService } from 'src/app/services/icon-registry.service';
 import { OpenWeatherService } from 'src/app/services/open-weather.service';
 
 @Component({
@@ -12,10 +13,22 @@ export class HomeComponent implements OnInit{
   search = '';
   data!: WeatherData;
 
-  constructor(private weatherService: OpenWeatherService) { }
+  mainItem!: WeatherItem;
+  additionalItems!: WeatherItem[];
+
+  constructor(private weatherService: OpenWeatherService, private iconRegistrySrervice: IconRegistryService) { }
   
   
   ngOnInit(): void {
+
+    navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
+      this.weatherService.searchByLongLat(position.coords).subscribe({
+        next: (data) => this.handleNewData(data),
+        error: (e) => console.error(e),
+        complete: () => console.info('complete')
+      });
+    }, (err)=>{});
+
     // fetch cache data for current location and show it.
 
     // if none exists fetch from api
@@ -23,10 +36,21 @@ export class HomeComponent implements OnInit{
   }
 
   searchClicked() {
-    this.weatherService.search(this.search).subscribe({
-      next: (data) => this.data = data,
+    this.weatherService.searchByLocation(this.search).subscribe({
+      next: (data) => this.handleNewData(data),
       error: (e) => console.error(e),
-      complete: () => console.info('complete')
+      complete: () => {
+        this.search = '';
+      }
     });
+  }
+
+  toWeatherIcon(icon: string) {
+    return this.iconRegistrySrervice.codeToImage(icon);
+  }
+
+  handleNewData(data: WeatherData): void {
+    this.data = data;
+    [this.mainItem, ...this.additionalItems] = data.list;
   }
 }

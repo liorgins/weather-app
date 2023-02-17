@@ -7,12 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { YourLocationsComponent } from './components/your-locations/your-locations.component';
+import { LocationComponent } from './components/location/location.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    YourLocationsComponent
+    YourLocationsComponent,
+    LocationComponent
   ],
   imports: [
     BrowserModule,

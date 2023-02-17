@@ -1,13 +1,18 @@
 
+export interface Wather {
+    id: number,
+    main: string,
+    description: string
+    icon: string
+}
+
 export interface WeatherItem {
     dt: number,
-    temp: number,
-    humidity: number,
-    weather: {
-        id: number,
-        main: string,
-        description: string
+    main: {
+        temp: number,
     }
+    humidity: number,
+    weather: Wather[]
 }
 
 export interface WeatherData {

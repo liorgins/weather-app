@@ -1,1 +1,6 @@
-<p>your-locations works!</p>
+<h3 class="locations-title">Your Locations</h3>
+<div class="location-list">
+    <div *ngFor="let location of locations">
+        <app-location [data]="location"></app-location>
+    </div>
+</div>

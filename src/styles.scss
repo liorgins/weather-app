@@ -1,5 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 
+html,body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+:root {
+    --primary-color: #7174fe;
+    --secondary-color: #2f8e7c;
+    --text-color: #ffffff;
+}
+
+body {
+    background-image: url('./assets/5361112.jpg');
+    color: var(--text-color);
+}
+
+a {
+    text-decoration: none;
+}
 
 input, button {
     background-color: white;
@@ -7,7 +27,7 @@ input, button {
     height: 45px;
     font-size: 16px;
     border: 1px solid #e0e0e0;
-    padding: 0 2%;
+    padding: 0 10px;
     &:focus {
         box-shadow: 0px 0px 3px 2px var(--primary-color);
         outline: none;

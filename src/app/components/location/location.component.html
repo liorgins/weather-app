@@ -1,0 +1,19 @@
+<div class="forcast">
+    <div class="forcast-location">
+        <img src="assets/icons/location-mark.svg" />
+        <div>{{data.city.name}}</div>
+    </div>
+    <div>{{mainItem.dt * 1000 | date: 'EEEE, MMM d'}}</div>
+    <div class="forcast-detail">
+        <img [src]="toWeatherIcon(mainItem.weather[0].icon)" />
+        <div>{{mainItem.main.temp}} &deg;</div>
+        <div>{{mainItem.weather[0].description}}</div>
+    </div>
+    <div class="forcast-additional">
+        <div *ngFor="let item of additionalItems" class="additional-item">
+            <div>{{item.dt | date: 'hh'}}</div>
+            <img [src]="toWeatherIcon(item.weather[0].icon)" />
+            <div>{{item.main.temp}}</div>
+        </div>
+    </div>
+</div>
