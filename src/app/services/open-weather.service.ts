@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http'
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { WeatherData } from '../models/weather-response';
-import { Observable} from 'rxjs';
+import { catchError, of } from 'rxjs';
 
 
 const baseApi = 'https://api.openweathermap.org/data/2.5/forecast';
@@ -15,7 +15,7 @@ const units = 'metric';
 })
 export class OpenWeatherService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   searchByLocation(location: string) {
     let params = new HttpParams().append('q', location);
@@ -23,7 +23,7 @@ export class OpenWeatherService {
     return this.search(params);
   }
 
-  searchByLongLat({longitude, latitude}: GeolocationCoordinates) {
+  searchByLongLat({ longitude, latitude }: GeolocationCoordinates) {
     let params = new HttpParams()
       .append('lon', longitude)
       .append('lat', latitude);
@@ -33,11 +33,18 @@ export class OpenWeatherService {
 
   private search(httpParams: HttpParams) {
     httpParams = httpParams
-    .append('appId', appId)
-    .append('units', units)
-    .append('cnt', cnt)
+      .append('appId', appId)
+      .append('units', units)
+      .append('cnt', cnt)
 
-    return this.http.get<WeatherData>(baseApi, {params: httpParams});
+    return this.http.get<WeatherData>(baseApi, { params: httpParams })
+      .pipe(catchError(err => {
+        let cod = '500';
+        if (err instanceof HttpErrorResponse) {
+          cod = err.status.toString()
+        }
+        return of({ cod } as WeatherData);
+      }));
   }
 
 }

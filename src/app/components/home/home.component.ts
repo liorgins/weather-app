@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject, catchError, Observable, of, switchMap } from 'rxjs';
 import { WeatherData, WeatherItem } from 'src/app/models/weather-response';
 import { IconRegistryService } from 'src/app/services/icon-registry.service';
+import { LocalstorageService } from 'src/app/services/localstorage.service';
 import { OpenWeatherService } from 'src/app/services/open-weather.service';
 
 @Component({
@@ -8,49 +10,93 @@ import { OpenWeatherService } from 'src/app/services/open-weather.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
 
   search = '';
-  data!: WeatherData;
 
   mainItem!: WeatherItem;
   additionalItems!: WeatherItem[];
 
-  constructor(private weatherService: OpenWeatherService, private iconRegistrySrervice: IconRegistryService) { }
-  
-  
+  error = false;
+
+  data$ = new BehaviorSubject<WeatherData | null>(null);
+
+  currentPosition$ = this.currentLocation;
+
+  constructor(private weatherService: OpenWeatherService,
+    private iconRegistrySrervice: IconRegistryService,
+    private localstorageService: LocalstorageService) { }
+
   ngOnInit(): void {
 
-    navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
-      this.weatherService.searchByLongLat(position.coords).subscribe({
-        next: (data) => this.handleNewData(data),
-        error: (e) => console.error(e),
-        complete: () => console.info('complete')
-      });
-    }, (err)=>{});
+    this.data$.subscribe({
+      next: (data) => {
+        if (this.isWeatherData(data)) {
+          [this.mainItem, ...this.additionalItems] = data.list;
+        }
+      },
+      error: (e) => console.error(e),
+      complete: () => console.info('complete .data$.subscribe')
+    });
 
-    // fetch cache data for current location and show it.
+    const cachedLocation = this.localstorageService.getHomeLocation();
+    if (cachedLocation) {
+      this.data$.next(cachedLocation);
+    } else {
+      this.currentPosition$.pipe(
+        switchMap((res: GeolocationPosition) =>
+          this.weatherService.searchByLongLat(res.coords)),
+        catchError(e => {
+          console.log(e);
+          this.data$.next(null);
+          this.error = true;
+          return of({} as WeatherData);
+        })
+      ).subscribe({ next: (data: WeatherData) => this.data$.next(data) });
+    }
 
-    // if none exists fetch from api
+    
+
 
   }
 
   searchClicked() {
     this.weatherService.searchByLocation(this.search).subscribe({
-      next: (data) => this.handleNewData(data),
-      error: (e) => console.error(e),
+      next: (data) => this.data$.next(data),
+      error: (e) => {
+        console.log('searchByLongLat error', e)
+        this.data$.next(null);
+        this.error = true;
+      },
       complete: () => {
+        console.log('complete searchByLocation for ', this.search);
         this.search = '';
       }
     });
+  }
+
+  saveToLocations() {
+    let location = this.data$.getValue();
+    if (this.isWeatherData(location)) {
+      this.localstorageService.addToSavedLocations(location);
+    }
   }
 
   toWeatherIcon(icon: string) {
     return this.iconRegistrySrervice.codeToImage(icon);
   }
 
-  handleNewData(data: WeatherData): void {
-    this.data = data;
-    [this.mainItem, ...this.additionalItems] = data.list;
+  get currentLocation(): Observable<GeolocationPosition> {
+    return new Observable(observer => {
+      navigator.geolocation.getCurrentPosition(
+        (location: GeolocationPosition) => {
+          observer.next(location);
+        },
+        err => observer.error(err))
+    });
+  }
+
+  isWeatherData(data: WeatherData | null): data is WeatherData {
+    return data !== null;
   }
 }

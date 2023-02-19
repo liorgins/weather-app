@@ -35,7 +35,6 @@ export class IconRegistryService  {
     console.log(this.registryMap);
   }
 
-  
 
   codeToImage(code: string): string {
     let name = this.registryMap.has(code.toString()) ?

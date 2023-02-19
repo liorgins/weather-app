@@ -10,16 +10,21 @@ img {
     max-height: 500px;
     text-shadow: 1px 1px 1px grey;
     filter: drop-shadow(1px 1px 1x grey);
-    background-color: #00000026;
+    background-color: var(--panel-bg);
     border-radius: 10px;
     box-sizing: border-box;
-    padding: 20px;
+    padding: 20px 0;
     row-gap: 30px;
 }
 
 .forcast-detail {
     display: grid;
     justify-items: center;
+
+    >img {
+        height: 48px;
+        width: 48px;
+    }
 }
 
 
@@ -31,12 +36,13 @@ img {
     align-items: center;
 
     >div {
-        font-size: 24px;
+        font-size: vat(--text-medium);
         font-weight: 600;
     }
 
     >img {
         width: 26px;
+        height: 26px;
     }
 }
 
@@ -49,4 +55,5 @@ img {
     width: 60px;
     display: grid;
     justify-content: center;
+    justify-items: center;
 }

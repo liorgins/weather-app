@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SavedLocations } from 'src/app/models/saved-locations';
+import { LocalstorageService } from 'src/app/services/localstorage.service';
 
 
 
@@ -797,7 +799,16 @@ const mockLocations = [
   templateUrl: './your-locations.component.html',
   styleUrls: ['./your-locations.component.scss']
 })
-export class YourLocationsComponent {
-  locations = mockLocations;
+export class YourLocationsComponent implements OnInit {
+
+  savedLocations!: SavedLocations;
+
+  constructor (private localstorageService: LocalstorageService) {}
+
+  ngOnInit(): void {
+    this.savedLocations = this.localstorageService.getSavedLocations();
+  }
+  
+  
 
 }

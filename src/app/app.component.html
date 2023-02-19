@@ -1,7 +1,14 @@
-
-
 <div class="header">
-  <div class="logo">Forcasts</div>
+  <div class="logo" [routerLink]="'home'">
+    <img src="assets/logo.svg" />
+    <span>Forcasts</span>
+  </div>
+  <div class="toggle">
+    <input id="chck" type="checkbox" (change)="toggleMode($event)">
+    <label for="chck" class="check-trail">
+      <span class="check-handler"></span>
+    </label>
+</div>
   <nav class="nav">
     <a class="nav-item" [routerLink]="'home'" [routerLinkActive]="'active'">Home</a>
     <a class="nav-item" [routerLink]="'your-locations'" [routerLinkActive]="'active'">Your Locations</a>

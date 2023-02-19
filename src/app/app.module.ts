@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { YourLocationsComponent } from './components/your-locations/your-locations.component';
 import { LocationComponent } from './components/location/location.component';
+import { LocalTimePipe } from './pipes/local-time.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     YourLocationsComponent,
-    LocationComponent
+    LocationComponent,
+    LocalTimePipe
   ],
   imports: [
     BrowserModule,

@@ -8,13 +8,36 @@ html,body {
 
 :root {
     --primary-color: #7174fe;
-    --secondary-color: #2f8e7c;
-    --text-color: #ffffff;
+    --secondary-color: #EF9D98;
+
+
+    --text-small: 16px;
+    --text-medium: 22px;
+    --text-large: 36px;
+
+    --header-height: 60px;
+
+    /* default light mode properties*/
+    --text-color: #000000;
+    --bg: white;
+    --panel-bg: #0000004e;
 }
 
 body {
-    background-image: url('./assets/5361112.jpg');
+    transition: background 0.2s linear;
+
+
+
+    //background-image: url('./assets/5361112.jpg');
+    background-color: var(--bg);
     color: var(--text-color);
+
+    /* dark mode properties*/
+    &.dark {
+        --text-color: white;
+        --bg: #292c35;
+        --panel-bg: #ffffff49;
+    }
 }
 
 a {
@@ -25,7 +48,7 @@ input, button {
     background-color: white;
     border-radius: 4px;
     height: 45px;
-    font-size: 16px;
+    font-size: var(--text-small);
     border: 1px solid #e0e0e0;
     padding: 0 10px;
     &:focus {
