@@ -1,6 +1,7 @@
 .locations-title {
     padding: 0 20px;
     text-align: center;
+    color: var(--text-color);
 
 }
 
@@ -10,6 +11,7 @@
     grid-template-columns: repeat(auto-fill, minmax(150px, 250px));
     justify-content: center;
     padding: 16px;
+    transition: 300ms;
 
 }
 

@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { WeatherItem } from 'src/app/models/weather-response';
-import { IconRegistryService } from 'src/app/services/icon-registry.service';
 
 
 @Component({
@@ -16,15 +15,10 @@ export class LocationComponent implements OnInit{
   mainItem!: WeatherItem;
   additionalItems!: WeatherItem[];
 
-  constructor(private iconRegistryService: IconRegistryService) {}
+  constructor() {}
 
   ngOnInit(): void {
     [this.mainItem, ...this.additionalItems] = this.data.list;
-  }
-
-
-  toWeatherIcon(icon: string) {
-    return this.iconRegistryService.codeToImage(icon);
   }
 
 }

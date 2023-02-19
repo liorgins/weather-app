@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SavedLocations } from '../models/saved-locations';
 import { WeatherData } from '../models/weather-response';
+import { DataService } from './data.service';
 
 const SAVED_LOACATIONS_KEY = 'savedLocations';
 const HOME_LOCATION_KEY = 'homeLocation';
@@ -10,7 +11,7 @@ const HOME_LOCATION_KEY = 'homeLocation';
 })
 export class LocalstorageService {
   
-  constructor() { }
+  constructor(private dataService: DataService) { }
 
   getHomeLocation(): WeatherData | null {
     const homeLocation = localStorage.getItem(HOME_LOCATION_KEY);
@@ -29,6 +30,7 @@ export class LocalstorageService {
     locations[location.city.name] = location;
     const data = JSON.stringify(locations);
     localStorage.setItem(SAVED_LOACATIONS_KEY, data);
+    this.dataService.setSavedLocation(locations);
   }
 
   addAllSavedLocations(savedLocations: SavedLocations): void {

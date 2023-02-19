@@ -9,6 +9,7 @@ import { HomeComponent } from './components/home/home.component';
 import { YourLocationsComponent } from './components/your-locations/your-locations.component';
 import { LocationComponent } from './components/location/location.component';
 import { LocalTimePipe } from './pipes/local-time.pipe';
+import { CodeToImagePipe } from './pipes/code-to-image.pipe';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { LocalTimePipe } from './pipes/local-time.pipe';
     HomeComponent,
     YourLocationsComponent,
     LocationComponent,
-    LocalTimePipe
+    LocalTimePipe,
+    CodeToImagePipe
   ],
   imports: [
     BrowserModule,

@@ -1,18 +1,20 @@
 <div class="forcast">
     <div class="forcast-location">
-        <img src="assets/icons/location-mark.svg" />
+        <svg width="32" height="41" viewBox="0 0 32 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M27.6917 24.549C29.5385 21.6984 31.1925 19.1453 31.1925 15.5963C31.1925 6.98269 24.2099 0 15.5963 0C6.98269 0 0 6.98269 0 15.5963C0 20.1866 2.51553 23.614 5.13924 27.1677C6.37239 29.4276 9.44427 33.0724 12.0711 36.1891C13.5007 37.8852 14.7984 39.4249 15.5963 40.5C16.4988 39.1319 18.3141 36.9608 20.2128 34.6899C22.5478 31.8972 25.009 28.9537 26.0533 27.1677C26.5914 26.2474 27.1499 25.3854 27.6917 24.549ZM15.5963 22.1366C20.5977 22.1366 24.6522 18.0822 24.6522 13.0807C24.6522 8.07931 20.5977 4.02484 15.5963 4.02484C10.5948 4.02484 6.54037 8.07931 6.54037 13.0807C6.54037 18.0822 10.5948 22.1366 15.5963 22.1366Z" fill="white"/>
+            </svg>
         <div>{{data.city.name}}</div>
     </div>
     <div>{{mainItem.dt * 1000 | date: 'EEEE, MMM d'}}</div>
     <div class="forcast-detail">
-        <img [src]="toWeatherIcon(mainItem.weather[0].icon)" />
+        <img [src]="mainItem.weather[0].icon | codeToImage" />
         <div>{{mainItem.main.temp | number : '1.0-0'}} &deg;</div>
         <div>{{mainItem.weather[0].description}}</div>
     </div>
     <div class="forcast-additional">
         <div *ngFor="let item of additionalItems" class="additional-item">
-            <div>{{item.dt | date: 'hh'}}</div>
-            <img [src]="toWeatherIcon(item.weather[0].icon)" />
+            <div>{{item.dt | localTime}}:00</div>
+            <img [src]="item.weather[0].icon | codeToImage" />
             <div>{{item.main.temp | number : '1.0-0'}} &deg;</div>
         </div>
     </div>

@@ -6,10 +6,9 @@ img {
 .forcast {
     color: var(--text-color);
     display: grid;
+    transition: 300ms;
     justify-items: center;
     max-height: 500px;
-    text-shadow: 1px 1px 1px grey;
-    filter: drop-shadow(1px 1px 1x grey);
     background-color: var(--panel-bg);
     border-radius: 10px;
     box-sizing: border-box;
@@ -24,6 +23,10 @@ img {
     >img {
         height: 48px;
         width: 48px;
+    }
+
+    >.temp {
+        font-size: var(--text-medium);
     }
 }
 
@@ -40,9 +43,13 @@ img {
         font-weight: 600;
     }
 
-    >img {
+    > svg {
         width: 26px;
         height: 26px;
+    
+        > path {
+            fill: var(--text-color);
+        }        
     }
 }
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { forkJoin, map, of, Subject, switchMap, takeUntil, tap, timer } from 'rxjs';
+import { forkJoin, map, Subject, switchMap, takeUntil, timer } from 'rxjs';
 import { SavedLocations } from './models/saved-locations';
+import { DataService } from './services/data.service';
 import { LocalstorageService } from './services/localstorage.service';
 import { OpenWeatherService } from './services/open-weather.service';
 
@@ -11,8 +12,12 @@ import { OpenWeatherService } from './services/open-weather.service';
 })
 export class AppComponent {
   private unsub = new Subject<void>();
+
+
+
   constructor(private weatherService: OpenWeatherService,
-    private localstorageService: LocalstorageService) { }
+    private localstorageService: LocalstorageService,
+    private dataService: DataService) { }
 
   ngOnInit(): void {
     timer(0, 15000).pipe(
@@ -22,12 +27,12 @@ export class AppComponent {
   }
 
   refreshCache() {
-    console.log('Refreshing...');
     
-    const homeLocation = this.localstorageService.getHomeLocation();
-    if(homeLocation !== null) {
-      this.weatherService.searchByLocation(homeLocation.city.name).subscribe()
-    }
+    // const homeLocation = this.dataService.homeLocation;
+    // if(homeLocation !== null) {
+    //   this.weatherService.searchByLocation(homeLocation.city.name)
+    //   .subscribe(data => this.dataService.setHomeLocation(data));
+    // }
 
     const locations = this.localstorageService.getSavedLocations();
     const list = Object.keys(locations);
@@ -38,20 +43,20 @@ export class AppComponent {
       const savedLocations = results
       .filter(item => item.cod === '200')
       .reduce((obj, item) => (obj[item.city.name] = item, obj) ,{} as SavedLocations);
-      console.log(savedLocations);
       this.localstorageService.addAllSavedLocations(savedLocations);
+      this.dataService.setSavedLocation(savedLocations);
+
     }));
   }
 
   toggleMode($event: Event) {
 
     const bodyElement = document.body;
-    bodyElement.classList.add('dark');
 
     const toggle = $event.target as HTMLInputElement;
     toggle.checked ?
-      bodyElement.classList.remove('dark') :
-      bodyElement.classList.add('dark');
+      bodyElement.classList.add('dark') :
+      bodyElement.classList.remove('dark');
   }
 
   ngOnDestroy(): void {

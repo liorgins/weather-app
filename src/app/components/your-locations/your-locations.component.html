@@ -1,7 +1,8 @@
-<h3 class="locations-title">Your Locations</h3>
-<ng-container *ngIf="savedLocations !== null; else noItems">
+<h3 class="locations-title">Saved Locations</h3>
+
+<ng-container *ngIf="(savedLocations | keyvalue)?.length; else noItems">
     <div class="location-list">
-        <ng-container *ngFor="let location of savedLocations | keyvalue">
+        <ng-container *ngFor="let location of savedLocations | keyvalue ; trackBy: trackByFn">
             <app-location [data]="location.value"></app-location>
         </ng-container>
     </div>
@@ -10,7 +11,7 @@
 <ng-template #noItems>
     <div class="empty-locations">
         <div class="empty-container">
-            <img src="assets/icons/clouds.svg">
+            <img src="assets/no-locations.svg">
             <div>You don't have saved locations</div>
         </div> 
     </div>
