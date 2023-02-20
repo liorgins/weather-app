@@ -1,6 +1,6 @@
 # WeatherApp
 
-Responsive eperimental weather web application using "OpenWeather free API".
+Responsive experimental weather web application using "OpenWeather free API".
 
 ## Development server
 
