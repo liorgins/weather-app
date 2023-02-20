@@ -3,6 +3,7 @@ import {  catchError, Observable, of, switchMap } from 'rxjs';
 import { WeatherData, WeatherItem } from 'src/app/models/weather-response';
 import { DataService } from 'src/app/services/data.service';
 import { LocalstorageService } from 'src/app/services/localstorage.service';
+import { ModalService } from 'src/app/services/modal.service';
 import { OpenWeatherService } from 'src/app/services/open-weather.service';
 
 @Component({
@@ -25,7 +26,8 @@ export class HomeComponent implements OnInit {
 
   constructor(private weatherService: OpenWeatherService,
     private localstorageService: LocalstorageService,
-    private dataService: DataService) { }
+    private dataService: DataService,
+    private modalService: ModalService) { }
 
   ngOnInit(): void {
     this.data$ = this.dataService.homeLocationData$;
@@ -86,6 +88,7 @@ export class HomeComponent implements OnInit {
     let location = this.dataService.homeLocation;
     if (this.isWeatherData(location)) {
       this.localstorageService.addToSavedLocations(location);
+      this.modalService.raiseMessage({message: 'Saved to Locations', status: 'SUCCESS'});
     }
   }
 

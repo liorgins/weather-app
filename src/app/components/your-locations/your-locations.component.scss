@@ -16,7 +16,7 @@
 }
 
 .empty-locations {
-    margin-top: 50px;
+    margin-top: 75px;
     display: grid;
     place-items: center;
 
@@ -26,12 +26,13 @@
         justify-items: center;
 
         >img {
-            width: 340px;
-            height: 340px;
+            width: 150px;
+            height: 150px;
         }
 
         >div {
             font-size: var(--text-medium);
+            color: var(--text-color);
         }
 
     }
